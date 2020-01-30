@@ -7,7 +7,7 @@ GitHub Release:
 
 Chrome: coming soon
 
-Firefox: coming soon
+Firefox: Download the XPI [here](https://github.com/thefoofighter/ThreeLiveRawShaderEditor/releases/download/1.0/three_live_raw_shader_editor-1.0-an+fx.xpi), and drop into Firefox to install.
 
 Chrome: Load the extension from disk directly:
 - Checkout the repo

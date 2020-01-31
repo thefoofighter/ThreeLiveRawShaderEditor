@@ -62,7 +62,7 @@ TLRSE = new ThreeLiveRawShaderEditor(renderer, camera, scene);
 
 ### Examples ###
 
-In the examples folder you can find a [module](/examples/Module based/hero.js) and [non-module](/examples/Non-Module basedhero.js) based example of how to implement in a simple scene.
+In the examples folder you can find a [module](/examples/ModuleBased/hero.js) and [non-module](/examples/Non-ModuleBasedhero.js) based example of how to implement in a simple scene.
 The only real diference in the module based version is that the TLRSE variable is defined outside the module function but set within it.
 
 ### How it works ###

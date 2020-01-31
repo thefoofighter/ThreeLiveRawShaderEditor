@@ -39,7 +39,7 @@ class ThreeLiveRawShaderEditor {
     }
 
     compile(){
-        renderer.compile(scene, camera);
+        this.renderer.compile(this.scene, this.camera);
     }
 }
 
@@ -50,6 +50,7 @@ var TLRSE;
 // ======== THREE LIVE RAW SHADER EDITOR =========
 TLRSE = new ThreeLiveRawShaderEditor(renderer, camera, scene);
 ```
+- Be sure to only set the constructor after the Renderer, Camera and Scene have been initialized by your own code.
 - Then navigate to your Three app in your browser
 - Open the developer tools
 - Open the Three Live Raw Shader Editor Tab
@@ -58,6 +59,11 @@ TLRSE = new ThreeLiveRawShaderEditor(renderer, camera, scene);
 - Clicking on one of these programs will load the Vertex and Fragment GLSL into their respective panes for editing
 - Make changes to your code, An OnKeyUp Event is monitored for each Code pane which when triggered will send valid GLSL to Three for compilation or alert you of a syntax error.
 - Clicking on the Eye Icon on each Program in the list will show or hide the selected material
+
+### Examples ###
+
+In the examples folder you can find a (module)[/examples/Module based/hero.js] and (non-module)[/examples/Non-Module basedhero.ja] based example of how to implement in a simple scene.
+The only real diference in the module based version is that the TLRSE variable is defined outside the module function but set within it.
 
 ### How it works ###
 

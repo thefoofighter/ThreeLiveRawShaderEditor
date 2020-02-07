@@ -22,16 +22,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 chrome.runtime.onConnect.addListener(function( connection ) {
 
-  console.log( 'onConnect', connection );
+ // console.log( 'onConnect', connection );
 
   // Listen to messages sent from the DevTools page
   var listener = function(message, sender, sendResponse) {
    
-    console.log('incoming message from dev tools page', message, sender, sendResponse );
+   // console.log('incoming message from dev tools page', message, sender, sendResponse );
 
     // Register initial connection  
-    if ( message.name === 'init') {
-      console.log( 'init' );
+    if ( message.name === 'tlrse_init') {
+     // console.log( 'init' );
       connections[ message.tabId ] = connection;
     }
   }

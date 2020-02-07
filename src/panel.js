@@ -1,6 +1,6 @@
 function injectedCode() {
 
-    programs = {};
+    tlrse_programs = {};
     threeMaterials = {};
 
      function logMsg() {
@@ -24,13 +24,13 @@ function injectedCode() {
 
         scene.traverse(function(child) {
             if (child.isMesh && child.material.type == "RawShaderMaterial") {
-                addProgram(child.material);
+                tlrse_addProgram(child.material);
                 threeMaterials[child.material.uuid] = child.material; 
             }
         });
     }
 
-    function addProgram(p) {
+    function tlrse_addProgram(p) {
         
         var el = {
             uid:        p.uuid,
@@ -40,11 +40,11 @@ function injectedCode() {
             vert:       p.vertexShader
         }
 
-        programs[p.uuid] = el;
+        tlrse_programs[p.uuid] = el;
 
         window.postMessage({
             source:     'ThreeLiveRawShaderEditor',
-            method:     'addProgram',
+            method:     'tlrse_addProgram',
             uid:        p.uuid,
             name:       p.name,
             visible:    p.visible,
@@ -75,7 +75,7 @@ function injectedCode() {
         });
     }
 
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+    var tlrse_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
     function decodeSource(input) {
 
@@ -87,7 +87,7 @@ function injectedCode() {
             var bc = 0, bs, buffer, idx = 0, output = ''; buffer = str.charAt(idx++); ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
                 bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0
         ) {
-            buffer = chars.indexOf(buffer);
+            buffer = tlrse_chars.indexOf(buffer);
         }
 
         
@@ -112,8 +112,8 @@ function injectedCode() {
 
     function findProgram(id) {
 
-        if (programs[id]) {
-            return programs[id];
+        if (tlrse_programs[id]) {
+            return tlrse_programs[id];
         }
 
         return null;
@@ -126,12 +126,12 @@ function injectedCode() {
 
         window.postMessage({
             source: 'ThreeLiveRawShaderEditor',
-            method: 'setVSSource',
+            method: 'tlrse_setVSSource',
             code: program.vert
         }, '*');
         window.postMessage({
             source: 'ThreeLiveRawShaderEditor',
-            method: 'setFSSource',
+            method: 'tlrse_setFSSource',
             code: program.frag
         }, '*');
 
@@ -235,14 +235,18 @@ logButton.addEventListener('click', function(e) {
 infoButton.addEventListener('click', function(e) {
     info.style.display = 'block';
     container.style.display = 'none';
+    log.style.display = 'none';
 });
 
 closeInfoButton.addEventListener('click', function(e) {
     info.style.display = 'none';
     container.style.display = 'block';
+    if(verbose){
+        log.style.display = 'block';
+    }
 });
 
-var backgroundPageConnection = chrome.runtime.connect({
+var tlrsePageConnection = chrome.runtime.connect({
     name: 'panel'
 });
 
@@ -271,12 +275,14 @@ fSEditor._errors = [];
 vSEditor.getWrapperElement().setAttribute('id', 'vsEditor');
 fSEditor.getWrapperElement().setAttribute('id', 'fsEditor');
 
-var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+var tlrse_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
 function encodeSource(input) {
     var str = String(input);
+
+  //  console.log(input);
     for (
-        var block, charCode, idx = 0, map = chars, output = ''; str.charAt(idx | 0) || (map = '=', idx % 1); output += map.charAt(63 & block >> 8 - idx % 1 * 8)
+        var block, charCode, idx = 0, map = tlrse_chars, output = ''; str.charAt(idx | 0) || (map = '=', idx % 1); output += map.charAt(63 & block >> 8 - idx % 1 * 8)
     ) {
         charCode = str.charCodeAt(idx += 3 / 4);
         if (charCode > 0xFF) {
@@ -289,6 +295,7 @@ function encodeSource(input) {
 
 function updateVSCode() {
     updateVSCount();
+
     var source = vSEditor.getValue();
     if (testShader(gl.VERTEX_SHADER, source, vSEditor)) {
         vsPanel.classList.add('compiled');
@@ -338,7 +345,7 @@ function selectProgram(li) {
 }
 
 var selectedProgram = null;
-var programs = {};
+var tlrse_programs = {};
 
 function updateProgramName(i, type, name) {
     if (i.name === '' || i.name === undefined ) {
@@ -352,7 +359,7 @@ function updateProgramName(i, type, name) {
 function tearDown() {
 
     selectedProgram = null;
-    programs = {};
+    tlrse_programs = {};
     vSEditor.setValue('');
     vsPanel.classList.remove('not-compiled');
     vsPanel.classList.remove('compiled');
@@ -366,17 +373,13 @@ function tearDown() {
 
 }
 
-backgroundPageConnection.onMessage.addListener(function(msg) {
+tlrsePageConnection.onMessage.addListener(function(msg) {
 
     switch (msg.method) {
-        case 'inject':
-            logMsg('inject');
-           // tearDown();
-            break;
-        case 'init':
+        case 'tlrse_init':
            // console.log('init');
             break;
-        case 'addProgram':
+        case 'tlrse_addProgram':
 
             logMsg('Add Program: ' + msg.uid);
 
@@ -415,21 +418,17 @@ backgroundPageConnection.onMessage.addListener(function(msg) {
                 number: list.children.length
             };
 
-            programs[msg.uid] = d;
+            tlrse_programs[msg.uid] = d;
             updateProgramName(d);
             break;
-        case 'setShaderName':
-            logMsg(msg.uid, msg.type, msg.name);
-            updateProgramName(programs[msg.uid], msg.type, msg.name);
-            break;
-        case 'setVSSource':
+        case 'tlrse_setVSSource':
             vSEditor.setValue(msg.code);
             vSEditor.refresh();
             vsPanel.classList.remove('compiled');
             vsPanel.classList.remove('not-compiled');
             updateVSCount();
             break;
-        case 'setFSSource':
+        case 'tlrse_setFSSource':
             fSEditor.setValue(msg.code);
             fSEditor.refresh();
             fsPanel.classList.remove('compiled');
@@ -443,8 +442,8 @@ backgroundPageConnection.onMessage.addListener(function(msg) {
 
 });
 
-backgroundPageConnection.postMessage({
-    name: 'init',
+tlrsePageConnection.postMessage({
+    name: 'tlrse_init',
     tabId: chrome.devtools.inspectedWindow.tabId
 });
 

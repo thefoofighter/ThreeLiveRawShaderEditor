@@ -10,11 +10,11 @@ chrome.devtools.panels.create( "Three Live Raw Shader Editor",
 );
 
 // Create a connection to the background page
-var backgroundPageConnection = chrome.runtime.connect({
+var tlrsePageConnection = chrome.runtime.connect({
   name: 'panel'
 });
 
-backgroundPageConnection.postMessage({
-  name: 'init',
+tlrsePageConnection.postMessage({
+  name: 'tlrse_init',
   tabId: chrome.devtools.inspectedWindow.tabId
 });

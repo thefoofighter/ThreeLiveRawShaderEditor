@@ -70,6 +70,21 @@ The only real diference in the module based version is that the TLRSE variable i
 - It's nothing special really. We simply expose a variable called TLRSE which holds a THREE scene, renderer and camera all of which are required by THREE to call the native renderer.compile(scene, camera) function.
 - This function is called when we make edits to our vertex or shader code
 
+### Quirks ###
+
+Newer versions of firefox reserve the ``Forward Slash " / "`` and ``Apostrophe Keys " ' "`` for use in some other functions. 
+
+The workaround for those who do not use those keys for firefoxes purposes is as follows:
+
+as explained [here](https://stackoverflow.com/questions/19650894/disable-slash-and-apostrophe-from-opening-quick-find-on-firefox?noredirect=1&lq=1)
+
+- Go to ``about:config``
+- Find ``accessibility.typeaheadfind.manual`` and set it to ``false``.
+
+you may need to restart the browser but it should then work
+
+Happy commenting your code. :)
+
 ### TO-DO ###
 
 Forks, pull requests and code critiques are welcome!

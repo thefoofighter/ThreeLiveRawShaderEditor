@@ -1,7 +1,7 @@
 # Three Live Raw Shader Editor for Chrome & Firefox
 Chrome &amp; FireFox Dev Tools Extension to live edit your ThreeJS  Raw Shaders for instant visual feedback. Built from [@thespite's](https://twitter.com/thespite) great [WebGL GLSL Shader Editor Extension for Google Chrome](https://github.com/spite/ShaderEditorExtension)
 
-![Shader Editor](/about/screen1.png)
+![Shader Editor](/about/tlrse.jpg)
 
 ### How to install ###
 
@@ -9,7 +9,7 @@ GitHub Release:
 
 Chrome: coming soon
 
-Firefox: Download the XPI [here](https://github.com/thefoofighter/ThreeLiveRawShaderEditor/releases/download/1.0/three_live_raw_shader_editor-1.0-an+fx.xpi), and drop into Firefox to install.
+Firefox: Download the XPI [here](https://github.com/thefoofighter/ThreeLiveRawShaderEditor/releases/download/1.1/three_live_raw_shader_editor-1.1-an+fx.xpi), and drop into Firefox to install.
 
 Chrome: Load the extension from disk directly:
 - Checkout the repo
